@@ -90,6 +90,8 @@ body {
     border-radius: 8px;
     padding: 10px 15px;
     cursor: pointer;
+    width: auto;
+    min-height: 40px;
 }
 
 #date-display {
@@ -109,14 +111,14 @@ body {
 }
 
 #date-picker {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     opacity: 0;
-    /* O input de data fica invisível, mas pode ser clicado */
-    cursor: pointer;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    pointer-events: all;
+    height: 100%;
+    z-index: 2;
 }
 
 /* ==========================================================================
@@ -379,4 +381,8 @@ body {
 .slider-arrows button:active {
     background: linear-gradient(135deg, #b6fbff 0%, #83a4d4 100%);
     transform: scale(0.96);
+}
+
+.flatpickr-input.flatpickr-mobile {
+    display: none !important;
 }

@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const datePicker = document.getElementById('date-picker');
     const dateDisplay = document.getElementById('date-display');
+    const weekdayDisplay = document.getElementById('weekday-display');
     const slidesContainer = document.getElementById('slides-container');
     const dotsContainer = document.getElementById('slider-dots');
     const loadingIndicator = document.getElementById('loading-indicator');
@@ -44,6 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' }).format(date);
     };
 
+    // Função para exibir o dia da semana
+    const updateWeekdayDisplay = (date) => {
+        const dias = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+        const diaSemana = dias[date.getDay()];
+        weekdayDisplay.textContent = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
+    };
+
     // Função para buscar os dados na planilha
     const fetchData = (dateString, displayDate) => {
         slidesContainer.innerHTML = '';
@@ -51,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         noDataMessage.style.display = 'none';
         loadingIndicator.style.display = 'block';
         dateDisplay.textContent = formatDateForDisplay(displayDate);
+        updateWeekdayDisplay(displayDate);
 
         const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
         const url = `${SCRIPT_URL}?callback=${callbackName}&data=${dateString}`;
@@ -244,16 +253,19 @@ document.addEventListener('DOMContentLoaded', () => {
         datePicker.value = `${yyyy}-${mm}-${dd}`;
 
         fetchData(formatDateForAPI(today), today);
+        updateWeekdayDisplay(today);
 
         // Ativar Flatpickr no input de data
         flatpickr("#date-picker", {
             dateFormat: "Y-m-d",
             locale: "pt",
             defaultDate: new Date(),
+            disableMobile: true,
             onChange: function (selectedDates, dateStr, instance) {
                 const [year, month, day] = dateStr.split('-');
                 const selectedDate = new Date(year, month - 1, day);
                 fetchData(formatDateForAPI(selectedDate), selectedDate);
+                updateWeekdayDisplay(selectedDate);
             }
         });
     };
