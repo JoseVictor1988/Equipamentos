@@ -298,8 +298,13 @@ body {
    5. Outros (Pontos de Navegação, Mensagens de Status)
    ========================================================================== */
 .slider-dots {
-    text-align: center;
-    padding: 20px 0 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 18px 0 0 0;
+    position: static;
+    z-index: 0;
 }
 
 .dot {

@@ -229,13 +229,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // No celular, ativar swipe
     if (isTouchDevice) {
         let startX = 0;
+        let startY = 0;
         slidesContainer.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
         });
         slidesContainer.addEventListener('touchend', (e) => {
             let endX = e.changedTouches[0].clientX;
-            if (endX < startX - 50) nextSlide();
-            if (endX > startX + 50) prevSlide();
+            let endY = e.changedTouches[0].clientY;
+            let deltaX = endX - startX;
+            let deltaY = endY - startY;
+            // Só troca slide se o movimento for mais horizontal que vertical e passar um limiar
+            if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                if (deltaX < 0) nextSlide();
+                if (deltaX > 0) prevSlide();
+            }
         });
     }
 
